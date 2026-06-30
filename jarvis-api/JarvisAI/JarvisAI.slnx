@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="JarvisAI.Application/JarvisAI.Application.csproj" />
+  <Project Path="JarvisAI.Domain/JarvisAI.Domain.csproj" />
+  <Project Path="JarvisAI.Infraestructure/JarvisAI.Infraestructure.csproj" />
+  <Project Path="JarvisAI/JarvisAI.Api.csproj" />
+</Solution>

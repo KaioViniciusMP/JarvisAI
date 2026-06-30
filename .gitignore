@@ -1,0 +1,52 @@
+# Build outputs
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.slnx.user
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/
+!**/packages/build/
+nuget.config
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment / secrets
+.env
+.env.local
+appsettings.Local.json
+appsettings.Production.json
+
+# Entity Framework migrations sqlite dev file
+*.db
+*.db-shm
+*.db-wal
+
+# Docker volumes
+docker/volumes/
+
+# Node (para o frontend futuro)
+node_modules/
+dist/
+.next/
