@@ -1,4 +1,5 @@
 ﻿using JarvisAI.Application.DTOs;
+using JarvisAI.Application.Interfaces;
 
 namespace JarvisAI.Api.Endpoints
 {
@@ -6,14 +7,11 @@ namespace JarvisAI.Api.Endpoints
     {
         public static void MapChatEndpoints(this WebApplication app)
         {
-            app.MapPost("/chat", (ChatRequest request) =>
+            app.MapPost("/chat", async (ChatRequest request, IChatService chatService) =>
             {
-                var response = new ChatResponse
-                {
-                    Response = $"Você disse: {request.Message}"
-                };
+                var response = await chatService.SendMessageAsync(request.Message);
 
-                return Results.Ok(response);
+                return Results.Ok(new ChatResponse { Response = response });
             });
         }
     }
