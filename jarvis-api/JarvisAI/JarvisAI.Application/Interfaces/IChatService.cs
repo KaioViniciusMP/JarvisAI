@@ -8,6 +8,6 @@ namespace JarvisAI.Application.Interfaces
 {
     public interface IChatService
     {
-        Task<string> SendMessageAsync(string message);
+        Task<string> SendMessageAsync(string message, string user = "Kaio");
     }
 }

@@ -13,6 +13,26 @@ namespace JarvisAI.Api.Endpoints
 
                 return Results.Ok(new ChatResponse { Response = response });
             });
+
+            app.MapGet("/test-generate", async () =>
+            {
+                var httpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
+
+                var requestBody = new
+                {
+                    model = "llama3.2",
+                    prompt = "Olá!",
+                    stream = false
+                };
+
+                var json = System.Text.Json.JsonSerializer.Serialize(requestBody);
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("http://localhost:11434/api/generate", content);
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Results.Ok(result);
+            });
         }
     }
 }
