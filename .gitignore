@@ -37,6 +37,7 @@ logs/
 .env.local
 appsettings.Local.json
 appsettings.Production.json
+appsettings.Development.json
 
 # Entity Framework migrations sqlite dev file
 *.db
@@ -50,3 +51,4 @@ docker/volumes/
 node_modules/
 dist/
 .next/
+
