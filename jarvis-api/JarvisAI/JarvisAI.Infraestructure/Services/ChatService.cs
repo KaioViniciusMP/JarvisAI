@@ -83,11 +83,13 @@ public class ChatService : IChatService
         string finalAnswer;
 
         // Verifica se a IA quer usar uma ferramenta
-        if (firstAnswer.StartsWith("TOOL:"))
+        var toolLine = firstAnswer.Split('\n').FirstOrDefault(l => l.TrimStart().StartsWith("TOOL:"));
+
+        if (toolLine != null)
         {
             var lines = firstAnswer.Split('\n');
-            var toolName = lines[0].Replace("TOOL:", "").Trim();
-            var toolInput = lines.Length > 1 ? lines[1].Replace("INPUT:", "").Trim() : "";
+            var toolName = lines.FirstOrDefault(l => l.TrimStart().StartsWith("TOOL:"))?.Replace("TOOL:", "").Trim() ?? "";
+            var toolInput = lines.FirstOrDefault(l => l.TrimStart().StartsWith("INPUT:"))?.Replace("INPUT:", "").Trim() ?? "";
 
             // Executa a ferramenta
             var toolResult = await _toolService.ExecuteToolAsync(toolName, toolInput);
