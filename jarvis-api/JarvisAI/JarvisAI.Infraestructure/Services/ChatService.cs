@@ -2,30 +2,36 @@
 using JarvisAI.Domain.Entities;
 using JarvisAI.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
-using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using OpenAI.Chat;
+using System.ClientModel;
 
 namespace JarvisAI.Infraestructure.Services;
 
 public class ChatService : IChatService
 {
-    private readonly HttpClient _httpClient;
+    private readonly ChatClient _chatClient;
     private readonly JarvisDbContext _db;
-    private const string Model = "qwen2.5:1.5b";
-    private const string OllamaUrl = "http://localhost:11434/api/generate";
 
-    public ChatService(JarvisDbContext db)
+    public ChatService(JarvisDbContext db, IConfiguration configuration)
     {
-        _httpClient = new HttpClient
-        {
-            Timeout = TimeSpan.FromMinutes(5)
-        };
+        var apiKey = configuration["Groq:ApiKey"]!;
+        var model = configuration["Groq:Model"]!;
+
+        _chatClient = new ChatClient(
+            model: model,
+            credential: new ApiKeyCredential(apiKey),
+            options: new OpenAI.OpenAIClientOptions
+            {
+                Endpoint = new Uri("https://api.groq.com/openai/v1")
+            }
+        );
+
         _db = db;
     }
 
     public async Task<string> SendMessageAsync(string message, string user = "Kaio")
     {
-        // Busca histórico das últimas 10 conversas
         var history = await _db.Conversations
             .Where(c => c.User == user)
             .OrderByDescending(c => c.Date)
@@ -33,43 +39,32 @@ public class ChatService : IChatService
             .OrderBy(c => c.Date)
             .ToListAsync();
 
-        // Monta contexto com histórico
-        var context = "";
-        foreach (var conv in history)
+        var messages = new List<ChatMessage>
         {
-            context += $"Usuário: {conv.Question}\nJarvis: {conv.Answer}\n";
-        }
-
-        var prompt = $"{context}Usuário: {message}\nJarvis:";
-
-        var requestBody = new
-        {
-            model = Model,
-            prompt = prompt,
-            stream = false
+            new SystemChatMessage("Você é o Jarvis, um assistente inteligente. Responda sempre em português.")
         };
 
-        var json = JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        foreach (var conv in history)
+        {
+            messages.Add(new UserChatMessage(conv.Question));
+            messages.Add(new AssistantChatMessage(conv.Answer));
+        }
 
-        var httpResponse = await _httpClient.PostAsync(OllamaUrl, content);
-        httpResponse.EnsureSuccessStatusCode();
+        messages.Add(new UserChatMessage(message));
 
-        var responseJson = await httpResponse.Content.ReadAsStringAsync();
-        var ollamaResponse = JsonSerializer.Deserialize<JsonElement>(responseJson);
-        var response = ollamaResponse.GetProperty("response").GetString() ?? "";
+        var response = await _chatClient.CompleteChatAsync(messages);
+        var answer = response.Value.Content[0].Text;
 
-        // Salva conversa no banco
         _db.Conversations.Add(new Conversation
         {
             User = user,
             Question = message,
-            Answer = response,
+            Answer = answer,
             Date = DateTime.UtcNow
         });
 
         await _db.SaveChangesAsync();
 
-        return response;
+        return answer;
     }
 }
