@@ -85,6 +85,14 @@ JarvisAI/
 │       ├── WeatherTool.cs
 │       └── SearchTool.cs
 │
+├── JarvisAI.Agent/             # Agente local (controle do computador)
+│   ├── Commands/
+│   │   ├── OpenChromeCommand.cs
+│   │   ├── OpenVsCodeCommand.cs
+│   │   └── RunCommandPromptCommand.cs
+│   ├── Worker.cs
+│   └── Program.cs
+│
 ├── mobile/                     # Atalhos do iPhone (Siri Shortcuts)
 ├── docs/                       # Documentação
 └── docker/                     # Configurações Docker
@@ -184,6 +192,7 @@ Update-Database -Project JarvisAI.Infraestructure -StartupProject JarvisAI
 | `SearchTool` | Pesquisa na internet via DuckDuckGo | "Pesquise sobre IA" |
 | `NewsTool` | Busca notícias recentes | "Quais são as últimas notícias?" |
 | `ReminderTool` | Cria e lista lembretes | "Me lembre de tomar água às 14h" |
+| `ComputerTool` | Controla o computador via agente local | "Abra o VS Code" / "Abra o Chrome" |
 
 ---
 
@@ -314,7 +323,7 @@ A Siri vai executar o atalho, perguntar o que você quer e ler a resposta com su
 - [x] Fase 5 — Sistema de ferramentas (Tools)
 - [x] Fase 6 — Function Calling automático
 - [x] Fase 7 — Ferramentas do dia a dia (Clima, Pesquisa, Notícias, Lembretes)
-- [ ] Fase 8 — Controle do computador
+- [x] Fase 8 — Controle do computador (Agent local via SignalR)
 - [ ] Fase 9 — Memória inteligente
 - [ ] Fase 10 — MCP (Model Context Protocol)
 - [ ] Fase 11 — Agente autônomo

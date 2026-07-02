@@ -1,4 +1,5 @@
 using JarvisAI.Api.Endpoints;
+using JarvisAI.Api.Hubs;
 using JarvisAI.Application.Interfaces;
 using JarvisAI.Domain.Interfaces;
 using JarvisAI.Infraestructure.Data;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<JarvisDbContext>(options =>
     options.UseSqlite("Data Source=jarvis.db"));
 
@@ -19,6 +21,7 @@ builder.Services.AddScoped<WeatherTool>();
 builder.Services.AddScoped<SearchTool>();
 builder.Services.AddScoped<NewsTool>();
 builder.Services.AddScoped<ReminderTool>();
+builder.Services.AddScoped<ComputerTool>();
 
 // Registra IEnumerable<ITool>
 builder.Services.AddScoped<IEnumerable<ITool>>(sp => new List<ITool>
@@ -28,7 +31,8 @@ builder.Services.AddScoped<IEnumerable<ITool>>(sp => new List<ITool>
     sp.GetRequiredService<WeatherTool>(),
     sp.GetRequiredService<SearchTool>(),
     sp.GetRequiredService<NewsTool>(),
-    sp.GetRequiredService<ReminderTool>()
+    sp.GetRequiredService<ReminderTool>(),
+    sp.GetRequiredService<ComputerTool>()
 });
 
 builder.Services.AddScoped<IToolService, ToolService>();
@@ -42,5 +46,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapChatEndpoints();
+app.MapHub<AgentHub>("/hubs/agent");
 
 app.Run();

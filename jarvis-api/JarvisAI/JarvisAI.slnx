@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="JarvisAI.Agent/JarvisAI.Agent.csproj" Id="ba2e4bbf-fbec-41b4-86f6-096ba67bba3f" />
   <Project Path="JarvisAI.Application/JarvisAI.Application.csproj" />
   <Project Path="JarvisAI.Domain/JarvisAI.Domain.csproj" />
   <Project Path="JarvisAI.Infraestructure/JarvisAI.Infraestructure.csproj" />
