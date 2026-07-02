@@ -17,6 +17,8 @@ builder.Services.AddScoped<TimeTool>();
 builder.Services.AddScoped<CalculatorTool>();
 builder.Services.AddScoped<WeatherTool>();
 builder.Services.AddScoped<SearchTool>();
+builder.Services.AddScoped<NewsTool>();
+builder.Services.AddScoped<ReminderTool>();
 
 // Registra IEnumerable<ITool>
 builder.Services.AddScoped<IEnumerable<ITool>>(sp => new List<ITool>
@@ -24,7 +26,9 @@ builder.Services.AddScoped<IEnumerable<ITool>>(sp => new List<ITool>
     sp.GetRequiredService<TimeTool>(),
     sp.GetRequiredService<CalculatorTool>(),
     sp.GetRequiredService<WeatherTool>(),
-    sp.GetRequiredService<SearchTool>()
+    sp.GetRequiredService<SearchTool>(),
+    sp.GetRequiredService<NewsTool>(),
+    sp.GetRequiredService<ReminderTool>()
 });
 
 builder.Services.AddScoped<IToolService, ToolService>();

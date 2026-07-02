@@ -13,5 +13,6 @@ namespace JarvisAI.Infraestructure.Data
         public JarvisDbContext(DbContextOptions<JarvisDbContext> options) : base(options) { }
 
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Reminder> Reminders { get; set; }
     }
 }

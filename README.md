@@ -182,6 +182,8 @@ Update-Database -Project JarvisAI.Infraestructure -StartupProject JarvisAI
 | `CalculatorTool` | Realiza cálculos matemáticos | "Quanto é 250 * 87?" |
 | `WeatherTool` | Consulta o clima de uma cidade | "Como está o clima em São Paulo?" |
 | `SearchTool` | Pesquisa na internet via DuckDuckGo | "Pesquise sobre IA" |
+| `NewsTool` | Busca notícias recentes | "Quais são as últimas notícias?" |
+| `ReminderTool` | Cria e lista lembretes | "Me lembre de tomar água às 14h" |
 
 ---
 
@@ -311,7 +313,7 @@ A Siri vai executar o atalho, perguntar o que você quer e ler a resposta com su
 - [x] Fase 4 — Memória de conversas com SQLite
 - [x] Fase 5 — Sistema de ferramentas (Tools)
 - [x] Fase 6 — Function Calling automático
-- [x] Fase 7 — Ferramentas do dia a dia (Clima, Pesquisa)
+- [x] Fase 7 — Ferramentas do dia a dia (Clima, Pesquisa, Notícias, Lembretes)
 - [ ] Fase 8 — Controle do computador
 - [ ] Fase 9 — Memória inteligente
 - [ ] Fase 10 — MCP (Model Context Protocol)
